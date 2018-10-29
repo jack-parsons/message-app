@@ -1,31 +1,27 @@
-package server;
+package client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServerMain {
-	ServerSocket ss;
-	Socket clientSocket;
+public class ClientMain {
 	static int portNumber = 1046;
 	
 	public static void main(String[] args) {
 		String inputLine;
 		// Open socket with client as resources
-		try (ServerSocket serverSocket = new ServerSocket(portNumber);
-				Socket clientSocket = serverSocket.accept();
+		try (Socket clientSocket = new Socket("localhost", portNumber);
 			    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 			    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				BufferedReader localInput = new BufferedReader(new InputStreamReader(System.in));
 				) {
-			System.out.println("Connected");
-			while ((inputLine = in.readLine()) != null) {
-				System.out.println("step");
+			while (true) {
+				inputLine = localInput.readLine();
+				out.println(inputLine);
 				System.out.println(inputLine);
 			}
-			System.out.println("Finished");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
