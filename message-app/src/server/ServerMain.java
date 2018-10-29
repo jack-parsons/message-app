@@ -22,7 +22,6 @@ public class ServerMain {
 				) {
 			System.out.println("Connected");
 			while ((inputLine = in.readLine()) != null) {
-				System.out.println("step");
 				System.out.println(inputLine);
 			}
 			System.out.println("Finished");
