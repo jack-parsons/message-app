@@ -20,6 +20,7 @@ public class ClientController {
 	
 	public void initController() {
 		clientView.getSendButton().addActionListener(e -> sendButtonEvent(e));
+		clientView.getSendTextField().addActionListener(e -> sendButtonEvent(e));
 		clientView.getNewConnectionButton().addActionListener(e -> newConnectionButton(e));
 	}
 	

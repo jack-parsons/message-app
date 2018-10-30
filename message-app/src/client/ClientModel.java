@@ -45,11 +45,7 @@ public class ClientModel {
 		    Runtime.getRuntime().addShutdownHook(new Thread() {
 		        @Override
 		        public void run() {
-		            try {
-						connectionSocket.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+	            	endMessageServerConnection();
 		        }
 		    });
 		    
@@ -60,6 +56,14 @@ public class ClientModel {
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
+		}
+	}
+	
+	public void endMessageServerConnection() {
+		try {
+			connectionSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
