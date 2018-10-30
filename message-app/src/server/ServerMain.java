@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServerMain {
 	ServerSocket ss;
@@ -13,22 +15,22 @@ public class ServerMain {
 	static int portNumber = 1042;
 	
 	public static void main(String[] args) {
+		List<Thread> threads = new ArrayList<Thread>();
 		String inputLine;
+		
 		// Open socket with client as resources
-		while (true) {
-			try (ServerSocket serverSocket = new ServerSocket(portNumber);
+		try (ServerSocket serverSocket = new ServerSocket(portNumber);) {
+			while (true) {
+				try {
 					Socket clientSocket = serverSocket.accept();
-				    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-				    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-					) {
-				System.out.println("Connected");
-				while ((inputLine = in.readLine()) != null) {
-					System.out.println(inputLine);
-				}
-				System.out.println("Finished");
-			} catch (IOException e) {
-				e.printStackTrace();
+					ServerThread runner = new ServerThread(clientSocket);
+					new Thread(runner).start();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} 
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

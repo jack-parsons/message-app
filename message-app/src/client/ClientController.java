@@ -18,6 +18,9 @@ public class ClientController {
 		initModel();
 	}
 	
+	/**
+	 * Add the ActionListeners to the ClientView elements
+	 */
 	public void initController() {
 		clientView.getSendButton().addActionListener(e -> sendButtonEvent(e));
 		clientView.getSendTextField().addActionListener(e -> sendButtonEvent(e));
