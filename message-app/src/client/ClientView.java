@@ -7,6 +7,7 @@ import java.awt.BorderLayout;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 
@@ -32,10 +33,11 @@ public class ClientView {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
-		
+
 		messagePane = new JTextPane();
 		messagePane.setEditable(false);
-		frame.getContentPane().add(messagePane, BorderLayout.CENTER);
+		JScrollPane scrollPlane2 = new JScrollPane(messagePane);
+		frame.getContentPane().add(scrollPlane2, BorderLayout.CENTER);
 		
 		bottomPanel = new JPanel();
 		frame.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
@@ -73,7 +75,7 @@ public class ClientView {
 	}
 	
 	public void showFailedConnectionDialogue() {
-		JOptionPane.showMessageDialog(frame, "Connection to server failed");
+		JOptionPane.showMessageDialog(frame, "Connection to server failed", "", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public JTextField getPortNumberTextField() {

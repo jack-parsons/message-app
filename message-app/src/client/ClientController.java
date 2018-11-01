@@ -42,10 +42,16 @@ public class ClientController {
 		if (clientModel.connectToMessageServer()) {
 			// If the connection succeeds
 			clientView.showSucessfulConnectionDialogue();
+
+			MessageEvent event = new MessageEvent() {
+				public void sendMessage(String message) {
+					clientModel.addMessage(message);
+				}
+			};
+			new Thread(new ClientThread(clientModel.getSocket(), event)).start();
 		} else {
 			// If the connection fails
 			clientView.showFailedConnectionDialogue();
-			
 		}
 		
 	}

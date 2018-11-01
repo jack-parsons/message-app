@@ -76,7 +76,6 @@ public class ClientModel {
 			try {
 				// Put the message in the message document so it is displayed locally
 				String messageInSendBox = getMessageInSendBox();
-				messageDocument.insertString(messageDocument.getLength(), getMessageInSendBox() + "\n", null);
 				// Clear the message in the send box
 				sendDocument.remove(0, sendDocument.getLength());
 				// Send out message to server
@@ -87,6 +86,18 @@ public class ClientModel {
 			return true;
 		}
 		return false; // If the socket is not connected return false
+	}
+	
+	/**
+	 * Add message to messageDocument
+	 * @param message
+	 */
+	public void addMessage(String message) {
+		try {
+			messageDocument.insertString(messageDocument.getLength(), message + "\n", null);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public PrintWriter getConnectionOutput() {
@@ -151,5 +162,9 @@ public class ClientModel {
 
 	public void setSendDocument(Document sendDocument) {
 		this.sendDocument = sendDocument;
+	}
+	
+	public Socket getSocket() {
+		return connectionSocket;
 	}
 }
