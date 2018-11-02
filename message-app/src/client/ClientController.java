@@ -3,6 +3,8 @@ package client;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.text.BadLocationException;
+
 /**
  * Takes inputs from the user and uses it to manipulate the ClientModel
  * @author Jack
@@ -32,13 +34,24 @@ public class ClientController {
 		clientModel.setSendDocument(clientView.getSendTextField().getDocument());
 		clientModel.setPortDocument(clientView.getPortNumberTextField().getDocument());
 		clientModel.setHostNameDocument(clientView.getHostNameTextField().getDocument());
+		changeUsername();
 	}
 	
 	public void sendButtonEvent(ActionEvent e) {
-		clientModel.sendMessage();
+		try {
+			clientModel.sendMessage(clientModel.getMessageInSendBox());
+		} catch (BadLocationException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	public void changeUsername() {
+		clientModel.setUsername(clientView.getUsernameBox().getText());
 	}
 	
 	public void newConnectionButton(ActionEvent e) {
+
+		changeUsername();
 		if (clientModel.connectToMessageServer()) {
 			// If the connection succeeds
 			clientView.showSucessfulConnectionDialogue();
@@ -46,6 +59,10 @@ public class ClientController {
 			MessageEvent event = new MessageEvent() {
 				public void sendMessage(String message) {
 					clientModel.addMessage(message);
+					
+					// Autoscroll to bottom
+					int lastCharPos = clientModel.getMessageDocument().getLength();
+					clientView.getMessagePane().select(lastCharPos, lastCharPos);
 				}
 			};
 			new Thread(new ClientThread(clientModel.getSocket(), event)).start();

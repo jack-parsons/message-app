@@ -27,6 +27,7 @@ public class ClientView {
 	private JButton newConnectionButton;
 	private JTextField portNumberTextField;
 	private JTextField hostNameTextField;
+	private JTextField usernameBox;
 
 	public ClientView() {
 		frame = new JFrame();
@@ -67,6 +68,12 @@ public class ClientView {
 		hostNameTextField.setToolTipText("IP Address (can be localhost)");
 		toolBar.add(hostNameTextField);
 		hostNameTextField.setColumns(1);
+		
+		usernameBox = new JTextField();
+		usernameBox.setToolTipText("Username");
+		usernameBox.setText("Client 1");
+		toolBar.add(usernameBox);
+		usernameBox.setColumns(5);
 		frame.setVisible(true);
 	}
 	
@@ -124,6 +131,14 @@ public class ClientView {
 
 	public void setNewConnectionButton(JButton newConnectionButton) {
 		this.newConnectionButton = newConnectionButton;
+	}
+
+	public JTextField getUsernameBox() {
+		return usernameBox;
+	}
+
+	public void setUsernameBox(JTextField usernameBox) {
+		this.usernameBox = usernameBox;
 	}
 
 }

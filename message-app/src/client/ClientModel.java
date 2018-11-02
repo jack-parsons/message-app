@@ -24,6 +24,7 @@ public class ClientModel {
 	private Document sendDocument;
 	private Document hostNameDocument;
 	private Document portDocument;
+	private String username;
 
 	public ClientModel(String hostName, int portNumber) {
 		connectionSocket = new Socket(); // Create unconnected socket
@@ -35,11 +36,16 @@ public class ClientModel {
 	 */
 	public boolean connectToMessageServer() {
 		try {	
+			// Check if already connected
+			if (connectionSocket.isConnected()) {
+				connectionSocket.close();
+			}
 			// Set up connection
-//			System.out.printf("'%s' '%d'", getHostName(), getPortNumber());
 			connectionSocket = new Socket(getHostName(), getPortNumber());
 		    connectionOutput = new PrintWriter(connectionSocket.getOutputStream(), true);
 		    connectionInput = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+		    
+		    sendUsername();
 		    
 		    //When app is closed, close the connection socket
 		    Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -59,6 +65,10 @@ public class ClientModel {
 		}
 	}
 	
+	public void sendUsername() {
+		sendMessage(getUsername());
+	}
+	
 	public void endMessageServerConnection() {
 		try {
 			connectionSocket.close();
@@ -71,15 +81,15 @@ public class ClientModel {
 	 * Attempt to send message to server and update message text field.
 	 * @return true iff socket is connected
 	 */
-	public boolean sendMessage() {
+	public boolean sendMessage(String message) {
 		if (connectionSocket.isConnected()) {
 			try {
 				// Put the message in the message document so it is displayed locally
-				String messageInSendBox = getMessageInSendBox();
 				// Clear the message in the send box
 				sendDocument.remove(0, sendDocument.getLength());
+				
 				// Send out message to server
-				getConnectionOutput().println(messageInSendBox);
+				getConnectionOutput().printf("%s\n", message);
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
@@ -132,10 +142,14 @@ public class ClientModel {
 		this.portDocument = portDocument;
 	}
 
-	private String getMessageInSendBox() throws BadLocationException {
+	public String getMessageInSendBox() throws BadLocationException {
 		return sendDocument.getText(0, sendDocument.getLength());
 	}
 	
+	public Document getMessageDocument() {
+		return messageDocument;
+	}
+
 	public void setMessageDocument(Document document) {
 		this.messageDocument = document;
 	}
@@ -166,5 +180,13 @@ public class ClientModel {
 	
 	public Socket getSocket() {
 		return connectionSocket;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }

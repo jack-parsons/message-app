@@ -16,6 +16,9 @@ public class ServerMain {
 				try {
 					Socket clientSocket = serverSocket.accept();
 					ServerThread runner = new ServerThread(clientSocket, serverThreads);
+//					for (ServerThread serverThread : serverThreads) {
+//						serverThread.sendMessage(String.format("", ));
+//					}
 					serverThreads.add(runner);
 					new Thread(runner).start();
 				} catch (IOException e) {
